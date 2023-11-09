@@ -19,15 +19,17 @@ else:
     exit(1)
 
 #Send an HTTP POST request to write data to InfluxDB
-data = 23
-timestamp = int(datetime.utcnow().timestamp())
-measurement = "temperature"
+data = 0
+while True:
+    data=data+1
+    timestamp = int(datetime.utcnow().timestamp())
+    measurement = "temperature"
 
-data_point = f"{measurement} value={data} {timestamp}"
-response = requests.post(write_url, params=dict(db=db_name, precision="s"), data=data_point)
-                      
-if response.status_code == 204:
-    print("Data written successfully.")
-else:
-    print(f"Failed to write data: {response.text}")
-    exit(1)
+    data_point = f"{measurement} value={data} {timestamp}"
+    response = requests.post(write_url, params=dict(db=db_name, precision="s"), data=data_point)
+                          
+    if response.status_code == 204:
+        print("Data written successfully.")
+    else:
+        print(f"Failed to write data: {response.text}")
+        exit(1)
